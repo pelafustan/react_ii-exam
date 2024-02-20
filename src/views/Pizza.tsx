@@ -19,7 +19,8 @@ export function PizzaView() {
     removeFromCart
   } = useCart();
 
-  const quantity = getItemQuantity(pizza.id)
+  const quantity = getItemQuantity(pizza.id);
+  const subTotal = quantity * pizza.price;
 
   const handleAdd = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -67,14 +68,25 @@ export function PizzaView() {
                 </List.Item>
               )}
             />
+            <Divider />
           </Col>
         </Row>
         <Row justify="space-evenly" className="mt-3">
           <Col key="price">
             <Typography.Title level={3} className="text-muted">
-              {formatCurrency(pizza.price)} / un.
+              Precio: {formatCurrency(pizza.price)} / un.
             </Typography.Title>
           </Col>
+          {
+            subTotal
+            ? 
+              <Col key="sub">
+                <Typography.Title level={3} className="text-muted">
+                  Sub Total: {formatCurrency(subTotal)}
+                </Typography.Title>
+              </Col>
+            : null
+          }
           <Col key="buttons">
             <Container className="d-flex flex-row">
               <Badge count={quantity}>
