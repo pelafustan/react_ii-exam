@@ -4,7 +4,7 @@ import { Pizza } from "../utils/types";
 import { titleCase } from "../utils/titleCase";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import Container from "react-bootstrap/Container";
 import { useCart } from "../hooks/useCart"
 
 export function PizzaCard({ pizza }: { pizza: Pizza }) {
@@ -22,15 +22,15 @@ export function PizzaCard({ pizza }: { pizza: Pizza }) {
     increaseItemQuantity(pizza.id);
   }
 
-  const handleRemove = (event: React.MouseEvent<HTMLElement>) => {
+  const handleDecrease = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    removeFromCart(pizza.id);
+    decreaseItemQuantity(pizza.id);
   }
 
   const {
     getItemQuantity,
     increaseItemQuantity,
-    removeFromCart,
+    decreaseItemQuantity,
   } = useCart();
 
   const actions = [
@@ -39,7 +39,7 @@ export function PizzaCard({ pizza }: { pizza: Pizza }) {
       key="view"
       type="primary"
     >
-      Ver más...
+      Más...
     </Button>,
     <Button
       onClick={handleAdd}
@@ -55,15 +55,26 @@ export function PizzaCard({ pizza }: { pizza: Pizza }) {
     actions.pop();
     actions.push(
       <Button
-        onClick={handleRemove}
+        onClick={handleDecrease}
         key="remove"
         type="primary"
         style={{ backgroundColor: "red" }}
       >
-        Quitar
+        -
+      </Button>
+    );
+    actions.push(
+      <Button
+        onClick={handleAdd}
+        key="addNew"
+        type="primary"
+        style={{ backgroundColor: "green" }}
+      >
+        +
       </Button>
     );
   } else if (!getItemQuantity(pizza.id) && actions.length > 2) {
+    actions.pop();
     actions.pop();
     actions.push(
       <Button

@@ -2,6 +2,7 @@ import { Button, Image, Modal, Typography, Row, Col } from "antd";
 import { Pizza } from "../utils/types";
 import { titleCase } from "../utils/titleCase";
 import { formatCurrency } from "../utils/formatCurrency";
+import { useCart } from "../hooks/useCart";
 
 
 type ModalProps = {
@@ -11,8 +12,15 @@ type ModalProps = {
 };
 
 export function PizzaModal({ pizza, open, setOpen }: ModalProps) {
+
+  const { increaseItemQuantity } = useCart();
+
   const handleOk = () => {
     setOpen(false);
+  }
+
+  const handleAdd = () => {
+    increaseItemQuantity(pizza.id);
   }
 
   const handleCancel = () => {
@@ -37,7 +45,7 @@ export function PizzaModal({ pizza, open, setOpen }: ModalProps) {
           <Button
             key="cart"
             type="primary"
-            onClick={handleCancel}
+            onClick={handleAdd}
           >
             Agregar
           </Button>,

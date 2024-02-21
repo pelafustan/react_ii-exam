@@ -13,6 +13,7 @@ import pizzas from "./data/pizzas.json";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
+import { Cart } from "./views/Cart";
 
 const router = createBrowserRouter(
   [
@@ -45,6 +46,10 @@ const router = createBrowserRouter(
           path: "about",
           element: <About />,
         },
+        {
+          path: "cart",
+          element: <Cart />
+        }
       ]
     },
   ],
