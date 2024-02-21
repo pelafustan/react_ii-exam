@@ -1,4 +1,4 @@
-import { Button, Drawer, Space, Typography } from "antd";
+import { Button, Drawer, Empty, Space, Typography } from "antd";
 import { titleCase } from "../utils/titleCase";
 import { formatCurrency } from "../utils/formatCurrency";
 import { useCart } from "../hooks/useCart";
@@ -24,6 +24,12 @@ export function CartDrawer({ open, setOpen }: DrawerProps) {
     getItemQuantity,
     removeFromCart
   } = useCart();
+
+  const cartItems = pizzas.filter(pizza => {
+    if (getItemQuantity(pizza.id)) {
+      return pizza;
+    }
+  })
 
   const handleClose = () => {
     setOpen(false);
@@ -65,47 +71,60 @@ export function CartDrawer({ open, setOpen }: DrawerProps) {
         width={"35%"}
         extra={
           <Space>
-            <Button onClick={handleClose}>Seguit comprando</Button>
+            <Button onClick={handleClose}>Seguir comprando</Button>
             <Button onClick={handleCheckout}>Checkout</Button>
           </Space>
         }
       >
         <Container fluid>
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th></th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-              pizzas.map(pizza => (
-                getItemQuantity(pizza.id)
-                  ?
-                  <tr key={pizza.id}>
-                    <td>{titleCase(pizza.name)}</td>
-                    <td>
-                      <Button.Group>
-                        <Button htmlType="button" data-id={pizza.id} onClick={handleDecrease}>-</Button>
-                        <Typography.Text strong className="mx-3">{getItemQuantity(pizza.id)}</Typography.Text>
-                        <Button htmlType="button" data-id={pizza.id} onClick={handleIncrease}>+</Button>
-                      </Button.Group>
-                    </td>
-                    <td>
-                      <Button htmlType="button" data-id={pizza.id} onClick={handleRemove}>
-                        Quitar
-                      </Button>
-                    </td>
-                    <td>{formatCurrency(getItemQuantity(pizza.id) * pizza.price)}</td>
+          {
+            cartItems.length ?
+              <Table responsive>
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                   </tr>
-                  : null
-              ))
-            }
-            </tbody>
-          </Table>
+                </thead>
+                <tbody>
+                  {
+                    pizzas.map(pizza => (
+                      getItemQuantity(pizza.id)
+                        ?
+                        <tr key={pizza.id}>
+                          <td>{titleCase(pizza.name)}</td>
+                          <td>
+                            <Button.Group>
+                              <Button htmlType="button" data-id={pizza.id} onClick={handleDecrease}>-</Button>
+                              <Typography.Text strong className="mx-3">{getItemQuantity(pizza.id)}</Typography.Text>
+                              <Button htmlType="button" data-id={pizza.id} onClick={handleIncrease}>+</Button>
+                            </Button.Group>
+                          </td>
+                          <td>
+                            <Button htmlType="button" data-id={pizza.id} onClick={handleRemove}>
+                              Quitar
+                            </Button>
+                          </td>
+                          <td>{formatCurrency(getItemQuantity(pizza.id) * pizza.price)}</td>
+                        </tr>
+                        : null
+                    ))
+                  }
+                </tbody>
+              </Table>
+              :
+              <Empty
+                description={
+                  <span>
+                    No tienes productos en tu pedido...
+                  </span>
+                }
+              >
+
+              </Empty>
+          }
         </Container>
       </Drawer>
     </>
