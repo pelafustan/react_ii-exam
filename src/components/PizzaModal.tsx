@@ -1,4 +1,4 @@
-import { Button, Image, Modal, Typography, Row, Col } from "antd";
+import { Button, Image, Modal, Typography, Row, Col, message } from "antd";
 import { Pizza } from "../utils/types";
 import { titleCase } from "../utils/titleCase";
 import { formatCurrency } from "../utils/formatCurrency";
@@ -21,6 +21,9 @@ export function PizzaModal({ pizza, open, setOpen }: ModalProps) {
 
   const handleAdd = () => {
     increaseItemQuantity(pizza.id);
+    message.success(
+      `Pizza ${titleCase(pizza.name)} ha sido agregada al carro`, 2
+    )
   }
 
   const handleCancel = () => {

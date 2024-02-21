@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Col, Divider, Image, List, Row, Typography } from "antd";
+import { Avatar, Badge, Button, Col, Divider, Image, List, Row, Typography, message } from "antd";
 import Container from "react-bootstrap/Container";
 import { useLoaderData } from "react-router-dom";
 
@@ -22,18 +22,18 @@ export function PizzaView() {
   const quantity = getItemQuantity(pizza.id);
   const subTotal = quantity * pizza.price;
 
-  const handleAdd = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
+  const handleAdd = () => {
     increaseItemQuantity(pizza.id);
+    message.success(
+      `Pizza ${titleCase(pizza.name)} ha sido agregada al carro`, 2
+    )
   }
 
-  const handleDecrease = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
+  const handleDecrease = () => {
     decreaseItemQuantity(pizza.id);
   }
 
-  const handleRemove = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
+  const handleRemove = () => {
     removeFromCart(pizza.id);
   }
 

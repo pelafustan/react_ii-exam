@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Image, Typography } from "antd";
+import { Badge, Button, Card, Image, Typography, message } from "antd";
 import { PizzaModal } from "./PizzaModal";
 import { Pizza } from "../utils/types";
 import { titleCase } from "../utils/titleCase";
@@ -20,6 +20,9 @@ export function PizzaCard({ pizza }: { pizza: Pizza }) {
   const handleAdd = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     increaseItemQuantity(pizza.id);
+    message.success(
+      `Pizza ${titleCase(pizza.name)} ha sido agregada al carro`, 2
+    )
   }
 
   const handleDecrease = (event: React.MouseEvent<HTMLElement>) => {
