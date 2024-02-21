@@ -8,6 +8,8 @@ import Banner from "../assets/banner.png";
 import { useCart } from "../hooks/useCart";
 import { Pizza } from "../utils/types";
 import { formatCurrency } from "../utils/formatCurrency";
+import { useState } from "react";
+import { CartDrawer } from "./CartDrawer";
 
 export function Navigation() {
   const navbarStyles: React.CSSProperties = {
@@ -20,6 +22,12 @@ export function Navigation() {
   const navStyles: React.CSSProperties = {
     fontSize: "1.25rem",
     fontWeight: "700",
+  }
+
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
   }
 
   const pizzas = useLoaderData() as Pizza[];
@@ -78,10 +86,11 @@ export function Navigation() {
                     {formatCurrency(cartPrice)}
                   </Typography.Text>
                 : null}
-            <Button shape="circle" icon={<ShoppingTwoTone />} size="large" />
+            <Button shape="circle" onClick={showDrawer} icon={<ShoppingTwoTone />} size="large" />
           </Badge>
         </Container>
       </Navbar>
+      <CartDrawer open={open} setOpen={setOpen} />
     </>
   )
 }
